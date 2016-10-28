@@ -18,12 +18,12 @@ module EBTail
 			@use_private_ip = h.has_key?('use_private_ip') ? h['use_private_ip'] : false
 		end
 
-		def find_instances(cred)
+		def find_instances
 			@instances = []
 
 			puts "Finding instances ...".blue
 
-			client = Aws::EC2::Client.new cred
+			client = Aws::EC2::Client.new()
 			resp = client.describe_instances({
 				filters: [
 					{
@@ -32,6 +32,8 @@ module EBTail
 					},
 				],
 			})
+
+            puts "Region: #{client.config.region}"
 
 			resp.reservations.each do |r|
 				r.instances.each do |i| 

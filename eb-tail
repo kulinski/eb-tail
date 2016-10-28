@@ -26,7 +26,7 @@ module EBTail
 
 				environment = apply_args! args
 
-				environment.find_instances @credentials
+				environment.find_instances
 				puts "Found instance(s) [#{environment.instances.join(', ')}]".green
 
 				environment.tail!
@@ -72,28 +72,10 @@ module EBTail
 		end
 
 		def validate_config
-			raise "AWS credentials are missing, either add to the config.yml or environment vars." if !load_credentials!
-			puts "Finding AWS credentials ... Done!".green
-
 			raise "No Environments found in config.yml" if !load_environments!
 			puts "Found environment(s) [#{@environments.keys.join(', ')}] in config file.".green
-
-
 		end
 
-		def load_credentials!
-			@credentials[:access_key_id] = ENV['AWS_ACCESS_KEY_ID'] if ENV.has_key? 'AWS_ACCESS_KEY_ID'
-			@credentials[:secret_access_key] = ENV['AWS_SECRET_ACCESS_KEY'] if ENV.has_key? 'AWS_SECRET_ACCESS_KEY'
-			@credentials[:region] = ENV['AWS_REGION'] if ENV.has_key? 'AWS_REGION'
-
-			if @config.has_key? 'credentials'
-				@credentials[:access_key_id] = @config['credentials']['aws_key'] if @config['credentials'].has_key? 'aws_key'
-				@credentials[:secret_access_key] = @config['credentials']['aws_secret'] if @config['credentials'].has_key? 'aws_secret'
-				@credentials[:region] = @config['credentials']['aws_region'] if @config['credentials'].has_key? 'aws_region'
-			end
-
-			@credentials.length == 3
-		end
 
 		def load_environments!
 			@config['environments'].each do |env|
