@@ -9,8 +9,9 @@ or you can specify the file name
 
 ## Installation
 - Clone the repository
+- `gem install bundler`
 - `bundle install`
-- Make `config.yml` using the `sample.config.yml`
+- Configure `config.yml` using the `sample.config.yml`
 - `./eb-tail env-name`
 
 And you are done!
